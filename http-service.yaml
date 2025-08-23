@@ -1,0 +1,13 @@
+# Save this as nginx-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name:http-service  # A descriptive name for the service
+spec:
+  selector:
+    app: http-pod         # This label will link the service to my-nginx-pod2
+  ports:
+    - protocol: TCP
+      port: 80              # The port the service will expose
+      targetPort: 80        # The port Nginx is listening on inside the container
+  type: ClusterIP          # The default service type for internal communication

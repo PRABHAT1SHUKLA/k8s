@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-httpd-pod
+  labels:
+    app: my-httpd
+spec:
+  containers:
+  - name: my-httpd-container
+    image: httpd:latest # Using the Apache HTTP Server image
+    ports:
+    - containerPort: 80 # This tells Kubernetes to expect traffic on port 80 within the container
