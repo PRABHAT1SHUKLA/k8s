@@ -1,0 +1,26 @@
+# Create role for jane
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: developer-role
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "deployments", "services"]
+  verbs: ["get", "list", "watch", "create"]
+
+---
+# Bind role to jane
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer
+  namespace: default
+subjects:
+- kind: User
+  name: jane
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer-role
+  apiGroup: rbac.authorization.k8s.io
