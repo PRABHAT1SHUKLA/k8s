@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+  - name: my-container
+    image: busybox  # Simple image for testing
+    command: ["/bin/sh", "-c", "env && sleep 3600"]  # Prints env vars and keeps pod running
+    env:  # Inject specific ConfigMap keys as env vars
+    - name: APP_MODE
+      valueFrom:
+        configMapKeyRef:
+          name: my-config  # Name of the ConfigMap
+          key: app_mode   # Key from ConfigMap
+    - name: LOG_LEVEL
+      valueFrom:
+        configMapKeyRef:
+          name: my-config
+          key: log_level
