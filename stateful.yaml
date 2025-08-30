@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-statefulset  # Name of the StatefulSet
+spec:
+  serviceName: nginx-headless  # Links to the headless Service we created
+  replicas: 3  # Number of Pods to run
+  selector:
+    matchLabels:
+      app: nginx  # Must match the Pod template labels
+  template:  # Template for each Pod
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest  # Use the official Nginx image
+        ports:
+        - containerPort: 80  # Port inside the container
+          name: web
+        volumeMounts:  # Mount persistent storage inside the Pod
+        - name: www
+          mountPath: /usr/share/nginx/html  # Where to mount in the container
+  volumeClaimTemplates:  # Template for PersistentVolumeClaims (one per Pod)
+  - metadata:
+      name: www  # PVC name prefix (e.g., www-nginx-statefulset-0)
+    spec:
+      accessModes: [ "ReadWriteOnce" ]  # Pod has exclusive read/write access
+      resources:
+        requests:
+          storage: 1Gi  # Request 1GB of storage per Pod
